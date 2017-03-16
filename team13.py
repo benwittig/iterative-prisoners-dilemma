@@ -1,3 +1,4 @@
+import random
 ####
 # Each team's file must define four tokens:
 #     team_name: a string
@@ -6,9 +7,13 @@
 #     move: A function that returns 'c' or 'b'
 ####
 
-team_name = 'The name the team gives to itself' # Only 10 chars displayed.
-strategy_name = 'The name the team gives to this strategy'
-strategy_description = 'How does this strategy decide?'
+team_name = 'Test2' # Only 10 chars displayed.
+strategy_name = 'Safetly Betray'
+strategy_description = ''''We will betray to keep a lead. All our moves
+when our score is less than or equal to the opponents score will be
+randomly decided, with it betraying 75% of the time. If we have the lead, we
+betray every time because at the most, both us and the opponent
+lose 250 points at the same time'''
     
 def move(my_history, their_history, my_score, their_score):
     ''' Arguments accepted: my_history, their_history are strings.
@@ -26,7 +31,14 @@ def move(my_history, their_history, my_score, their_score):
     # Analyze my_history and their_history and/or my_score and their_score.
     # Decide whether to return 'c' or 'b'.
     
-    return 'c'
+    if their_score >= my_score or their_score == my_score :
+        a = random.randint(1,4)
+        if a == 1 or a == 2 or a == 3:
+            return 'b'
+        else:
+            return 'c'
+    else:
+        return 'b'
 
     
 def test_move(my_history, their_history, my_score, their_score, result):
@@ -48,10 +60,10 @@ def test_move(my_history, their_history, my_score, their_score, result):
 if __name__ == '__main__':
      
     # Test 1: Betray on first move.
-    if test_move(my_history='',
-              their_history='', 
-              my_score=0,
-              their_score=0,
+    if test_move(my_history='ccbc',
+              their_history='cccb', 
+              my_score=500,
+              their_score=400,
               result='b'):
          print 'Test passed'
      # Test 2: Continue betraying if they collude despite being betrayed.
